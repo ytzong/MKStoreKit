@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'MKStoreKit'
-  s.version  = '5.00'
+  s.version  = '5.0'
   s.license  = { :type => 'MIT',
                  :text => 'MKStoreKit uses MIT Licensing And so all of my source code can
                            be used royalty-free into your app. Just make sure that you don’t
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.summary  = 'In-App Purchases StoreKit for iOS devices.'
   s.homepage = 'https://github.com/MugunthKumar/MKStoreKit'
   s.author   = { 'Mugunth Kumar' => 'mugunth@steinlogic.com' }
-  s.source   = { :git => 'https://github.com/marzapower/MKStoreKit.git', :tag => '5.00' }
+  s.source   = { :git => 'https://github.com/marzapower/MKStoreKit.git', :tag => '5.0' }
   s.platform = :ios, '5.0'
   s.source_files = '*.{h,m}', 'Externals/*.{h,m}'
   s.requires_arc = true
