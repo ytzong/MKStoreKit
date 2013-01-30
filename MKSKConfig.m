@@ -1,5 +1,5 @@
 //
-//  MKSKProduct.h
+//  MKSKConfig.m
 //  MKStoreKit (Version 5.0)
 //
 //  Created by Mugunth Kumar (@mugunthkumar) on 04/07/11.
@@ -24,30 +24,35 @@
 //  THE SOFTWARE.
 
 //  As a side note on using this code, you might consider giving some credit to me by
-//	1) linking my website from your app's website
-//	2) or crediting me inside the app's credits page
-//	3) or a tweet mentioning @mugunthkumar
-//	4) A paypal donation to mugunth.kumar@gmail.com
+//  1) linking my website from your app's website
+//  2) or crediting me inside the app's credits page
+//  3) or a tweet mentioning @mugunthkumar
+//  4) A paypal donation to mugunth.kumar@gmail.com
 
-#import <Foundation/Foundation.h>
+#import "MKSKConfig.h"
 
-@interface MKSKProduct : NSObject 
+static MKSKConfig *instance;
 
-@property (nonatomic, copy) void (^onReceiptVerificationSucceeded)();
-@property (nonatomic, copy) void (^onReceiptVerificationFailed)();
+@implementation MKSKConfig
 
-@property (nonatomic, strong) NSData *receipt;
++ (id) sharedInstance {
+  if (instance == nil) {
+    instance = [MKSKConfig new];
+  }
 
-@property (nonatomic, strong) NSString *productId;
-@property (nonatomic, strong) NSURLConnection *theConnection;
-@property (nonatomic, strong) NSMutableData *dataFromConnection;
+  return instance;
+}
 
-- (void) verifyReceiptOnComplete:(void (^)(void)) completionBlock
-                         onError:(void (^)(NSError*)) errorBlock;
+- (BOOL) usePrivateServer {
+  return NO;
+}
 
--(id) initWithProductId:(NSString*) aProductId receiptData:(NSData*) aReceipt;
+- (NSString *) privateServerURL {
+  return nil;
+}
 
-+(void) verifyProductForReviewAccess:(NSString*) productId
-                          onComplete:(void (^)(NSNumber*)) completionBlock
-                             onError:(void (^)(NSError*)) errorBlock;
+- (NSString *) sharedSecretKey {
+  return nil;
+}
+
 @end

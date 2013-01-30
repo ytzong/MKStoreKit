@@ -1,11 +1,7 @@
 //
-//  MKStoreKitConfigs.h
+//  MKSKConfig.h
 //  MKStoreKit (Version 5.0)
 //
-//	File created using Singleton XCode Template by Mugunth Kumar (http://mugunthkumar.com
-//  Permission granted to do anything, commercial/non-commercial with this file apart from removing the line/URL above
-//  Read my blog post at http://mk.sg/1m on how to use this code
-
 //  Created by Mugunth Kumar (@mugunthkumar) on 04/07/11.
 //  Copyright (C) 2011-2020 by Steinlogic Consulting And Training Pte Ltd.
 
@@ -28,32 +24,19 @@
 //  THE SOFTWARE.
 
 //  As a side note on using this code, you might consider giving some credit to me by
-//	1) linking my website from your app's website
-//	2) or crediting me inside the app's credits page
-//	3) or a tweet mentioning @mugunthkumar
-//	4) A paypal donation to mugunth.kumar@gmail.com
+//  1) linking my website from your app's website
+//  2) or crediting me inside the app's credits page
+//  3) or a tweet mentioning @mugunthkumar
+//  4) A paypal donation to mugunth.kumar@gmail.com
 
-// To avoid making mistakes map plist entries to macroses as below and use them
-// instead of keys itself.
-//
-// #define kConsumableBaseFeatureId @"com.mycompany.myapp."
-// #define kFeatureAId @"com.mugunthkumar.caltasks.propack"
-// #define kConsumableFeatureBId @"com.mycompany.myapp.005"
-// #define FishBasket @"FishBasket"
+@interface MKSKConfig : NSObject
 
-#ifndef SERVER_PRODUCT_MODEL
-    #define SERVER_PRODUCT_MODEL 0
-#endif
++ (id) sharedInstance;
 
-#ifndef OWN_SERVER
-    #define OWN_SERVER nil
-#endif
+- (BOOL) usePrivateServer;
 
-#ifndef REVIEW_ALLOWED
-    #define REVIEW_ALLOWED 0
-#endif
+- (NSString *) privateServerURL;
 
-#warning Shared Secret Missing Ignore this warning if you don't use auto-renewable subscriptions
-#ifndef kSharedSecret
-    #define kSharedSecret @"<FILL IN YOUR SHARED SECRET HERE>"
-#endif
+- (NSString *) sharedSecretKey;
+
+@end

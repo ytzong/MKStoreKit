@@ -30,6 +30,7 @@
 //	4) A paypal donation to mugunth.kumar@gmail.com
 
 #import "MKSKProduct.h"
+#import "MKSKConfig.h"
 
 #import "NSData+MKBase64.h"
 
@@ -143,7 +144,8 @@ static NSMutableData *sDataFromConnection;
     NSString *uniqueID = [self deviceId];
     // check udid and featureid with developer's server
 		
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", OWN_SERVER, @"featureCheck.php"]];
+    NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [[MKStoreKit configuration] privateServerURL], @"featureCheck.php"];
+    NSURL *url = [NSURL URLWithString:stringURL];
     
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url 
                                                               cachePolicy:NSURLRequestReloadIgnoringCacheData 
@@ -174,7 +176,8 @@ static NSMutableData *sDataFromConnection;
   self.onReceiptVerificationSucceeded = completionBlock;
   self.onReceiptVerificationFailed = errorBlock;
   
-  NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", OWN_SERVER, @"verifyProduct.php"]];
+  NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [[MKStoreKit configuration] privateServerURL], @"verifyProduct.php"];
+  NSURL *url = [NSURL URLWithString:stringURL];
 	
 	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url 
                                                             cachePolicy:NSURLRequestReloadIgnoringCacheData 

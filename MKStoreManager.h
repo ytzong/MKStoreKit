@@ -35,7 +35,7 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
-#import "MKStoreKitConfigs.h"
+#import "MKSKConfig.h"
 
 #define kReceiptStringKey @"MK_STOREKIT_RECEIPTS_STRING"
 
@@ -50,6 +50,12 @@
 #define kSubscriptionsInvalidNotification @"MKStoreKitSubscriptionsInvalid"
 
 @interface MKStoreManager : NSObject<SKProductsRequestDelegate, SKPaymentTransactionObserver>
+
+// Set your default configuration class
++ (void) setConfiguration:(MKSKConfig *)configuration;
+
+// Gets the configuration for this class
++ (MKSKConfig *)configuration;
 
 // These are the methods you will be using in your app
 + (MKStoreManager*)sharedManager;

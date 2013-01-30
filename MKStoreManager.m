@@ -39,6 +39,7 @@
 #import "MKSKSubscriptionProduct.h"
 #import "MKSKProduct.h"
 #import "NSData+MKBase64.h"
+
 #if ! __has_feature(objc_arc)
 #error MKStoreKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
@@ -68,7 +69,8 @@
 
 @implementation MKStoreManager
 
-static MKStoreManager* _sharedStoreManager;
+static MKStoreManager*  _sharedStoreManager;
+static MKSKConfig*      _configuration;
 
 +(void) updateFromiCloud:(NSNotification*) notificationObject {
   
@@ -171,6 +173,18 @@ static MKStoreManager* _sharedStoreManager;
 }
 
 #pragma mark Singleton Methods
+
++ (void) setConfiguration:(MKSKConfig *)configuration {
+  _configuration = configuration;
+}
+
++ (MKSKConfig *)configuration {
+  if (_configuration == nil) {
+    _configuration = [MKSKConfig instance];
+  }
+
+  return _configuration;
+}
 
 + (MKStoreManager*)sharedManager
 {
@@ -645,7 +659,8 @@ static MKStoreManager* _sharedStoreManager;
       }
     }
     
-    if(OWN_SERVER && SERVER_PRODUCT_MODEL)
+    MKSKConfig *config = [MKStoreManager configuration];
+    if([config usePrivateServer] && [config privateServerURL])
     {
       // ping server and get response before serializing the product
       // this is a blocking call to post receipt data to your server
