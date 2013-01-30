@@ -35,6 +35,8 @@
 
 - (BOOL) usePrivateServer;
 
+- (BOOL) reviewAllowed;
+
 - (NSString *) privateServerURL;
 
 - (NSString *) sharedSecretKey;

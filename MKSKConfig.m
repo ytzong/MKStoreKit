@@ -47,6 +47,10 @@ static MKSKConfig *instance;
   return NO;
 }
 
+- (BOOL) reviewAllowed {
+  return NO;
+}
+
 - (NSString *) privateServerURL {
   return nil;
 }

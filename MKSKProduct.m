@@ -31,6 +31,7 @@
 
 #import "MKSKProduct.h"
 #import "MKSKConfig.h"
+#import "MKStoreManager"
 
 #import "NSData+MKBase64.h"
 
@@ -136,7 +137,8 @@ static NSMutableData *sDataFromConnection;
                           onComplete:(void (^)(NSNumber*)) completionBlock
                              onError:(void (^)(NSError*)) errorBlock
 {
-  if(REVIEW_ALLOWED)
+  MKSKConfig *config = [MKStoreManager configuration];
+  if([config reviewAllowed])
   {
     onReviewRequestVerificationSucceeded = [completionBlock copy];
     onReviewRequestVerificationFailed = [errorBlock copy];
@@ -144,7 +146,7 @@ static NSMutableData *sDataFromConnection;
     NSString *uniqueID = [self deviceId];
     // check udid and featureid with developer's server
 		
-    NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [[MKStoreKit configuration] privateServerURL], @"featureCheck.php"];
+    NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [config privateServerURL], @"featureCheck.php"];
     NSURL *url = [NSURL URLWithString:stringURL];
     
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url 
@@ -176,7 +178,8 @@ static NSMutableData *sDataFromConnection;
   self.onReceiptVerificationSucceeded = completionBlock;
   self.onReceiptVerificationFailed = errorBlock;
   
-  NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [[MKStoreKit configuration] privateServerURL], @"verifyProduct.php"];
+  MKSKConfig *config = [MKStoreManager configuration];
+  NSString *stringURL = [NSString stringWithFormat:@"%@/%@", [config privateServerURL], @"verifyProduct.php"];
   NSURL *url = [NSURL URLWithString:stringURL];
 	
 	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url 
