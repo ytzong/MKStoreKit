@@ -31,7 +31,7 @@
 
 #import "MKSKProduct.h"
 #import "MKSKConfig.h"
-#import "MKStoreManager"
+#import "MKStoreManager.h"
 
 #import "NSData+MKBase64.h"
 
