@@ -68,7 +68,7 @@
 	[theRequest setHTTPMethod:@"POST"];		
 	[theRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 	
-  NSString *sharedSecretKey = [[MKStoreKit configuration] sharedSecretKey];
+  NSString *sharedSecretKey = [[MKStoreManager configuration] sharedSecretKey];
   NSString *receiptString = [NSString stringWithFormat:@"{\"receipt-data\":\"%@\" \"password\":\"%@\"}", [self.receipt base64EncodedString], sharedSecretKey];        
   
 	NSString *length = [NSString stringWithFormat:@"%d", [receiptString length]];	
