@@ -31,8 +31,6 @@
 
 @interface MKSKConfig : NSObject
 
-+ (id) sharedInstance;
-
 - (BOOL) usePrivateServer;
 
 - (BOOL) reviewAllowed;

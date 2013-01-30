@@ -31,17 +31,7 @@
 
 #import "MKSKConfig.h"
 
-static MKSKConfig *instance;
-
 @implementation MKSKConfig
-
-+ (id) sharedInstance {
-  if (instance == nil) {
-    instance = [MKSKConfig new];
-  }
-
-  return instance;
-}
 
 - (BOOL) usePrivateServer {
   return NO;

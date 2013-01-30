@@ -180,7 +180,7 @@ static MKSKConfig*      _configuration;
 
 + (MKSKConfig *)configuration {
   if (_configuration == nil) {
-    _configuration = [MKSKConfig instance];
+    _configuration = [MKSKConfig new];
   }
 
   return _configuration;
