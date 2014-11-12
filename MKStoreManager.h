@@ -75,9 +75,15 @@
 - (NSMutableArray*) purchasableObjectsDescription;
 
 // use this method to start a purchase
-- (void) buyFeature:(NSString*) featureId
-         onComplete:(void (^)(NSString* purchasedFeature, NSData*purchasedReceipt, NSArray* availableDownloads)) completionBlock
-        onCancelled:(void (^)(void)) cancelBlock;
+- (void)buyFeature:(NSString *)featureId
+        onComplete:(void (^)(NSString *purchasedFeature, NSData *purchasedReceipt, NSArray *availableDownloads))completionBlock
+       onCancelled:(void (^)(void))cancelBlock;
+
+// use this method to start a purchase of more than 1 in quantity.
+- (void)buyFeature:(NSString *)featureId
+          quantity:(NSInteger)quantity
+        onComplete:(void (^)(NSString *purchasedFeature, NSData *purchasedReceipt, NSArray *availableDownloads))completionBlock
+       onCancelled:(void (^)(void))cancelBlock;
 
 // use this method to restore a purchase
 - (void) restorePreviousTransactionsOnComplete:(void (^)(void)) completionBlock

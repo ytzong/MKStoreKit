@@ -64,7 +64,8 @@
 - (void) requestProductData;
 - (void) startVerifyingSubscriptionReceipts;
 -(void) rememberPurchaseOfProduct:(NSString*) productIdentifier withReceipt:(NSData*) receiptData;
--(void) addToQueue:(NSString*) productId;
+- (void)addToQueue:(NSString *)productId quantity:(NSInteger)quantity;
+
 @end
 
 @implementation MKStoreManager
@@ -444,55 +445,51 @@ static MKSKConfig*      _configuration;
 #endif
 }
 
-- (void) buyFeature:(NSString*) featureId
-         onComplete:(void (^)(NSString*, NSData*, NSArray*)) completionBlock
-        onCancelled:(void (^)(void)) cancelBlock
-{
-  self.onTransactionCompleted = completionBlock;
-  self.onTransactionCancelled = cancelBlock;
-  
-  [MKSKProduct verifyProductForReviewAccess:featureId
-                                 onComplete:^(NSNumber * isAllowed)
-   {
-     if([isAllowed boolValue])
-     {
-       [self showAlertWithTitle:NSLocalizedString(@"Review request approved", @"")
-                        message:NSLocalizedString(@"You can use this feature for reviewing the app.", @"")];
-       
-       if(self.onTransactionCompleted)
-         self.onTransactionCompleted(featureId, nil, nil);
-     }
-     else
-     {
-       [self addToQueue:featureId];
-     }
-     
-   }
-                                    onError:^(NSError* error)
-   {
-     NSLog(@"Review request cannot be checked now: %@", [error description]);
-     [self addToQueue:featureId];
-   }];
+- (void)buyFeature:(NSString *)featureId onComplete:(void (^)(NSString*, NSData*, NSArray*))completionBlock onCancelled:(void (^)(void))cancelBlock {
+    [self buyFeature:featureId quantity:1 onComplete:completionBlock onCancelled:cancelBlock];
 }
 
--(void) addToQueue:(NSString*) productId
-{
-  if ([SKPaymentQueue canMakePayments])
-	{
-    NSArray *allIds = [self.purchasableObjects valueForKey:@"productIdentifier"];
-    int index = [allIds indexOfObject:productId];
+- (void)buyFeature:(NSString *)featureId quantity:(NSInteger)quantity onComplete:(void (^)(NSString *purchasedFeature, NSData *purchasedReceipt, NSArray *availableDownloads))completionBlock onCancelled:(void (^)(void))cancelBlock {
+    self.onTransactionCompleted = completionBlock;
+    self.onTransactionCancelled = cancelBlock;
     
-    if(index == NSNotFound) return;
+    [MKSKProduct verifyProductForReviewAccess:featureId onComplete:^(NSNumber * isAllowed) {
+         if ([isAllowed boolValue]) {
+             [self showAlertWithTitle:NSLocalizedString(@"Review request approved", @"")
+                              message:NSLocalizedString(@"You can use this feature for reviewing the app.", @"")];
+             
+             if (self.onTransactionCompleted) {
+                 self.onTransactionCompleted(featureId, nil, nil);
+             }
+         }
+         else {
+             [self addToQueue:featureId quantity:quantity];
+         }
+     } onError:^(NSError* error) {
+         NSLog(@"Review request cannot be checked now: %@", [error description]);
+         [self addToQueue:featureId quantity:quantity];
+     }];
+}
+
+- (void)addToQueue:(NSString *)productId quantity:(NSInteger)quantity {
+    if ([SKPaymentQueue canMakePayments]) {
+        NSArray *allIds = [self.purchasableObjects valueForKey:@"productIdentifier"];
+        int index = [allIds indexOfObject:productId];
     
-    SKProduct *thisProduct = [self.purchasableObjects objectAtIndex:index];
-		SKPayment *payment = [SKPayment paymentWithProduct:thisProduct];
+        if (index == NSNotFound) {
+            return;
+        }
+    
+        SKProduct *product = [self.purchasableObjects objectAtIndex:index];
+        SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+        payment.quantity = quantity;
+	
 		[[SKPaymentQueue defaultQueue] addPayment:payment];
-	}
-	else
-	{
+  }
+  else {
     [self showAlertWithTitle:NSLocalizedString(@"In-App Purchasing disabled", @"")
                      message:NSLocalizedString(@"Check your parental control settings and try again later", @"")];
-	}
+  }
 }
 
 - (BOOL) canConsumeProduct:(NSString*) productIdentifier
