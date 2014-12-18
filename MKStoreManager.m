@@ -474,9 +474,12 @@ static MKSKConfig*      _configuration;
 - (void)addToQueue:(NSString *)productId quantity:(NSInteger)quantity {
     if ([SKPaymentQueue canMakePayments]) {
         NSArray *allIds = [self.purchasableObjects valueForKey:@"productIdentifier"];
-        int index = [allIds indexOfObject:productId];
+        NSUInteger index = [allIds indexOfObject:productId];
     
         if (index == NSNotFound) {
+            if (self.onTransactionCancelled) {
+              self.onTransactionCancelled();
+            }
             return;
         }
     
