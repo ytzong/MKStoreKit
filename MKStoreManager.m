@@ -217,9 +217,19 @@ static MKSKConfig*      _configuration;
 
 +(NSDictionary*) storeKitItems
 {
+    NSString *file = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:
+                      @"MKStoreKitConfigs.plist"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:file]) {
+        for (int i = 0; i < 10; i++) {
+            NSString *file2 = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:
+                               [NSString stringWithFormat:@"MKStoreKitConfigs%d.plist", i]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:file2]) {
+                file = file2;
+            }
+        }
+    }
   return [NSDictionary dictionaryWithContentsOfFile:
-          [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:
-           @"YTStoreKitConfigs.plist"]];
+          file];
 }
 
 - (void) restorePreviousTransactionsOnComplete:(void (^)(void)) completionBlock
