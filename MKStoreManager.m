@@ -219,7 +219,7 @@ static MKSKConfig*      _configuration;
 {
   return [NSDictionary dictionaryWithContentsOfFile:
           [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:
-           @"MKStoreKitConfigs.plist"]];
+           @"YTStoreKitConfigs.plist"]];
 }
 
 - (void) restorePreviousTransactionsOnComplete:(void (^)(void)) completionBlock
